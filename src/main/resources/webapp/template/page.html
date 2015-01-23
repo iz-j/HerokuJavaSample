@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>芳名録 via Heroku with Java</title>
+
+  <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/lib/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="/css/page.css" />
+  <script type="text/javascript" src="/js/page.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="">
+          <span><img id="logo" alt="Brand" src="../img/brand.png" />芳名録 via Heroku with Java</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row center">
+      <div>
+        <div>
+          <p class="well">HerokuとJavaを使って作った芳名録です。</p>
+        </div>
+      </div>
+    </div>
+    
+    <form class="row center">
+      <div class="form-group">
+        <label>コメント</label>
+        <textarea class="form-control" id="comment" rows="3" maxlength="400" autofocus="autofocus"></textarea>
+      </div>
+      <div class="form-group">
+        <button id="post" type="button" class="btn btn-primary" data-loading-text="Sending...">送信</button>
+      </div>
+    </form>
+    
+    <div class="row center">
+      <div class="panel panel-default footprint">
+        <div class="panel-heading">
+          <span>記帳履歴</span>
+          <span class="badge" th:text="${dtos.size()}">0</span>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" th:each="dto : ${dtos}">
+            <span th:text="${dto.datetime}">1900-01-01T00:00:00</span>
+            <pre class="comment" th:text="${dto.comment}">hogehoge</pre>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <hr />
+  
+    <footer>&copy;iz</footer>
+  </div>
+  
+</body>
+</html>

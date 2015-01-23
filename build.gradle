@@ -1,0 +1,50 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+version = '0.1'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+mainClassName = 'iz.footprint.Main'
+applicationName = 'iz-footprint'
+
+repositories { mavenCentral() }
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+	compile 'org.eclipse.jetty:jetty-servlet:7.6.0.v20120127'
+	compile 'javax.servlet:servlet-api:2.5'
+	compile 'postgresql:postgresql:9.0-801.jdbc4'
+
+	compile 'org.slf4j:slf4j-api:1.7.6'
+	compile 'joda-time:joda-time:2.+'
+	compile 'org.thymeleaf:thymeleaf:2.1.3.RELEASE'
+	compile 'org.apache.commons:commons-lang3:3.3.+'
+	compile 'org.apache.commons:commons-collections4:4.0'
+	compile 'commons-io:commons-io:2.+'
+	compile 'org.apache.tomcat:tomcat-jdbc:8.0.+'
+	compile 'commons-dbutils:commons-dbutils:1.+'
+
+	runtime 'ch.qos.logback:logback-classic:1.1.2'
+
+	testCompile 'junit:junit:4.12'
+}
+
+task stage(dependsOn: ['clean', 'installApp'])
+
+task wrapper(type: Wrapper) { gradleVersion = '2.1' }
+
+task batch(type: CreateStartScripts) {
+	mainClassName = "iz.footprint.content.FootprintBatch"
+	applicationName = "iz-batch"
+	outputDir = new File(project.buildDir, 'scripts')
+	classpath = jar.outputs.files + project.configurations.runtime
+}
+
+applicationDistribution.into("bin") {
+	from(batch)
+	fileMode = 0755
+}
